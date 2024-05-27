@@ -27,6 +27,7 @@ jobs:
           VUE_APP_AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           VUE_APP_AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           VUE_APP_AWS_REGION: ${{ secrets.AWS_SECRET_REGION }}
+          VUE_APP_ACCESS_PASSWORD: ${{ secrets.ACCESS_PASSWORD }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

@@ -1,17 +1,17 @@
 <template>
   <v-app>
     <v-main>
-      <router-view></router-view>
+      <password-check />
     </v-main>
   </v-app>
 </template>
 
 <script>
+import PasswordCheck from "./components/PasswordCheck.vue";
+
 export default {
-  name: "App",
+  components: {
+    PasswordCheck,
+  },
 };
 </script>
-
-<style scoped>
-/* Add your styles here */
-</style>
