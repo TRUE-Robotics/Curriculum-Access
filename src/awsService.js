@@ -11,13 +11,28 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-export const listFiles = async (bucketName) => {
+const listAllFiles = async (bucketName, prefix = "") => {
   const params = {
     Bucket: bucketName,
+    Prefix: prefix,
   };
+
+  let allKeys = [];
+  let data;
+
+  do {
+    data = await s3.listObjectsV2(params).promise();
+    allKeys = allKeys.concat(data.Contents);
+    params.ContinuationToken = data.NextContinuationToken;
+  } while (data.IsTruncated);
+
+  return allKeys;
+};
+
+export const listFiles = async (bucketName) => {
   try {
-    const data = await s3.listObjectsV2(params).promise();
-    return parseS3Keys(data.Contents);
+    const data = await listAllFiles(bucketName);
+    return parseS3Keys(data);
   } catch (err) {
     console.error("Error listing files: ", err);
     throw err;
