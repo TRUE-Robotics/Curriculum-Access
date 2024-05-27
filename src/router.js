@@ -6,6 +6,10 @@ import TakingOffWithPilot from "./components/TakingOffWithPilot.vue";
 const routes = [
   {
     path: "/",
+    redirect: { name: "Home" },
+  },
+  {
+    path: "/curriculum-accesss/",
     name: "Home",
     component: IntroductionToRobotics,
   },
