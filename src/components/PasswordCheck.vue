@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import config from "@/config";
+
 export default {
   data() {
     return {
@@ -24,7 +26,7 @@ export default {
       const urlParams = new URLSearchParams(window.location.search);
       const password = urlParams.get("password");
       const envPassword = process.env.VUE_APP_ACCESS_PASSWORD;
-      if (password === envPassword) {
+      if (password === envPassword || config.dev) {
         this.authenticated = true;
       } else {
         this.authenticated = false;

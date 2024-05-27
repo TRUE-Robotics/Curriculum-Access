@@ -1,6 +1,8 @@
 <template>
-  <v-toolbar color="purple" dark>
-    <v-toolbar-title>Curriculum Access</v-toolbar-title>
+  <v-toolbar color="white" dark>
+    <v-toolbar-title :style="{ paddingLeft: '150px' }"
+      >Curriculum Access</v-toolbar-title
+    >
     <v-spacer></v-spacer>
     <v-text-field
       v-model="search"
@@ -9,7 +11,7 @@
       single-line
       hide-details
       @input="$emit('search', search)"
-      :style="{ paddingRight: '25px' }"
+      :style="{ paddingRight: '150px' }"
     ></v-text-field>
   </v-toolbar>
 </template>
