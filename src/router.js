@@ -15,7 +15,7 @@ const routes = [
     component: IntroductionToRobotics,
   },
   {
-    path: "/taking-off-with-pilot",
+    path: "/curriculum-access/taking-off-with-pilot",
     name: "TakingOffWithPilot",
     component: TakingOffWithPilot,
   },
