@@ -1,38 +1,8 @@
+<!-- public/404.html -->
 <!DOCTYPE html>
-<html lang="">
+<html>
   <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <meta http-equiv="refresh" content="0; URL=./index.html" />
   </head>
-  <body>
-    <noscript>
-      <strong>
-        We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
-        properly without JavaScript enabled. Please enable it to continue.
-      </strong>
-    </noscript>
-    <div id="protected-content" style="display: none">
-      <div id="app"></div>
-    </div>
-    <script>
-      function checkPassword() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const password = urlParams.get("password");
-        const hostname = window.location.hostname;
-        if (
-          hostname.includes("localhost") ||
-          password === "curriculum-access"
-        ) {
-          document.getElementById("protected-content").style.display = "block";
-        } else {
-          // document.body.innerHTML = "<h1>Access Denied</h1>";
-          document.getElementById("protected-content").style.display = "block";
-        }
-      }
-      window.onload = checkPassword;
-    </script>
-  </body>
+  <body></body>
 </html>
