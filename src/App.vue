@@ -1,78 +1,14 @@
 <template>
   <v-app>
     <v-main>
-      <top-bar @search="searchFiles"></top-bar>
-      <v-container>
-        <v-card class="mx-auto">
-          <file-folder
-            :contents="filteredFiles"
-            folder=""
-            @downloadFolder="downloadFolder"
-            @downloadFile="downloadFile"
-          ></file-folder>
-        </v-card>
-      </v-container>
+      <router-view></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import { listFiles, downloadFile, downloadFolder } from "@/awsService";
-import FileFolder from "./components/FileFolder.vue";
-import TopBar from "./components/TopBar.vue";
-
 export default {
-  components: {
-    FileFolder,
-    TopBar,
-  },
-  data() {
-    return {
-      files: {},
-      searchQuery: "",
-    };
-  },
-  computed: {
-    filteredFiles() {
-      if (!this.searchQuery) {
-        return this.files;
-      }
-      const filter = (contents) => {
-        const result = {};
-        for (const [name, item] of Object.entries(contents)) {
-          if (this.isFolder(item)) {
-            const filteredContents = filter(item);
-            if (Object.keys(filteredContents).length > 0) {
-              result[name] = filteredContents;
-            }
-          } else if (
-            name.toLowerCase().includes(this.searchQuery.toLowerCase())
-          ) {
-            result[name] = item;
-          }
-        }
-        return result;
-      };
-      return filter(this.files);
-    },
-  },
-  async created() {
-    this.files = await listFiles("tr-curriculum-bucket");
-  },
-  methods: {
-    async downloadFile(key) {
-      await downloadFile("tr-curriculum-bucket", key);
-    },
-    async downloadFolder(key) {
-      await downloadFolder("tr-curriculum-bucket", key);
-    },
-    searchFiles(query) {
-      this.searchQuery = query;
-    },
-    isFolder(value) {
-      return value && !value.lastModified;
-    },
-  },
+  name: "App",
 };
 </script>
 

@@ -1,5 +1,5 @@
 {
-  "name": "my-vue-s3-project",
+  "name": "curriculum-access",
   "version": "0.1.0",
   "private": true,
   "homepage": "https://true-robotics.github.io/Curriculum-Access",
@@ -17,6 +17,7 @@
     "jszip": "^3.10.1",
     "roboto-fontface": "*",
     "vue": "^3.2.13",
+    "vue-router": "^4.3.2",
     "vuetify": "^3.6.7",
     "webfontloader": "^1.0.0"
   },

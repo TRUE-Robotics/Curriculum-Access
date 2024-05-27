@@ -1,6 +1,6 @@
 <template>
   <v-toolbar color="purple" dark>
-    <v-toolbar-title>My Files</v-toolbar-title>
+    <v-toolbar-title>Curriculum Access</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-text-field
       v-model="search"
