@@ -22,7 +22,10 @@
         const urlParams = new URLSearchParams(window.location.search);
         const password = urlParams.get("password");
         const hostname = window.location.hostname;
-        if (hostname.includes("localhost") || password === "your-password") {
+        if (
+          hostname.includes("localhost") ||
+          password === "curriculum-access"
+        ) {
           document.getElementById("protected-content").style.display = "block";
         } else {
           document.body.innerHTML = "<h1>Access Denied</h1>";
