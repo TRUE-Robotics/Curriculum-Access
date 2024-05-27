@@ -22,7 +22,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory("curriculum-access"),
+  history: createWebHistory("/curriculum-access/"),
   routes,
 });
 
