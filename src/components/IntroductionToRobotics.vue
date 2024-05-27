@@ -4,7 +4,9 @@
       <top-bar @search="searchFiles"></top-bar>
       <v-container>
         <v-card class="mx-auto">
+          <loading-spinner v-if="loading"></loading-spinner>
           <file-folder
+            v-else
             :contents="filteredFiles"
             folder=""
             @downloadFolder="downloadFolder"
@@ -20,16 +22,19 @@
 import { listFiles, downloadFile, downloadFolder } from "@/awsService";
 import FileFolder from "./FileFolder.vue";
 import TopBar from "./TopBar.vue";
+import LoadingSpinner from "./LoadingSpinner.vue";
 
 export default {
   components: {
     FileFolder,
     TopBar,
+    LoadingSpinner,
   },
   data() {
     return {
       files: {},
       searchQuery: "",
+      loading: true,
     };
   },
   computed: {
@@ -58,6 +63,7 @@ export default {
   },
   async created() {
     this.files = await listFiles("introduction-to-robotics");
+    this.loading = false;
   },
   methods: {
     async downloadFile(key) {
