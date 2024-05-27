@@ -20,7 +20,8 @@
             <v-list-subheader inset>Folders</v-list-subheader>
             <file-folder
               :contents="files"
-              @download="downloadFile"
+              folder=""
+              @downloadFolder="downloadFolder"
             ></file-folder>
           </v-list>
         </v-card>
@@ -30,7 +31,7 @@
 </template>
 
 <script>
-import { listFiles, downloadFile } from "@/awsService";
+import { listFiles, downloadFile, downloadFolder } from "@/awsService";
 import FileFolder from "./components/FileFolder.vue";
 
 export default {
@@ -48,6 +49,9 @@ export default {
   methods: {
     async downloadFile(key) {
       await downloadFile("tr-curriculum-bucket", key);
+    },
+    async downloadFolder(key) {
+      await downloadFolder("tr-curriculum-bucket", key);
     },
   },
 };

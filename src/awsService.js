@@ -1,5 +1,7 @@
 // src/awsService.js
 import AWS from 'aws-sdk';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 AWS.config.update({
     accessKeyId: process.env.VUE_APP_AWS_ACCESS_KEY_ID,
@@ -29,15 +31,41 @@ export const downloadFile = async (bucketName, key) => {
     };
     try {
         const data = await s3.getObject(params).promise();
-        const url = URL.createObjectURL(new Blob([data.Body]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', key);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        return { key, body: data.Body };
     } catch (err) {
         console.error('Error downloading file: ', err);
+        throw err;
+    }
+};
+
+export const downloadFolder = async (bucketName, folderKey) => {
+    const params = {
+        Bucket: bucketName,
+        Prefix: folderKey.endsWith('/') ? folderKey : `${folderKey}/`,
+    };
+
+    const zip = new JSZip();
+
+    try {
+        // List all objects in the folder
+        const listData = await s3.listObjectsV2(params).promise();
+        const fileKeys = listData.Contents.map(item => item.Key);
+
+        // Download each file and add it to the zip
+        const filePromises = fileKeys.map(async (fileKey) => {
+            const { key, body } = await downloadFile(bucketName, fileKey);
+            zip.file(key.replace(params.Prefix, ''), body); // Add the file to the zip, using the relative path
+        });
+
+        // Wait for all files to be added to the zip
+        await Promise.all(filePromises);
+
+        // Generate the zip file and trigger a download
+        const zipContent = await zip.generateAsync({ type: 'blob' });
+        saveAs(zipContent, `${folderKey.split('/').pop()}.zip`);
+
+    } catch (err) {
+        console.error('Error downloading folder: ', err);
         throw err;
     }
 };

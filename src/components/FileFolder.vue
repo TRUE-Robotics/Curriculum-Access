@@ -14,7 +14,15 @@
             </v-avatar>
           </template>
           <template v-slot:append>
-            <v-btn icon @click="$emit('download', name)">
+            <v-btn
+              icon
+              @click="
+                $emit(
+                  'downloadFolder',
+                  folder == '' ? name : folder + '/' + name
+                )
+              "
+            >
               <v-icon>mdi-download</v-icon>
             </v-btn>
           </template>
@@ -24,7 +32,7 @@
           v-else
           class="list-item"
           no-action="true"
-          @click="$emit('download', name)"
+          @click="$emit('download', folder == '' ? name : folder + '/' + name)"
           :title="name"
           :subtitle="formatDate(item.lastModified)"
         >
@@ -34,14 +42,23 @@
             </v-avatar>
           </template>
           <template v-slot:append>
-            <v-btn icon @click="$emit('download', name)">
+            <v-btn
+              icon
+              @click="
+                $emit('download', folder == '' ? name : folder + '/' + name)
+              "
+            >
               <v-icon>mdi-download</v-icon>
             </v-btn>
           </template>
         </v-list-item>
       </template>
 
-      <file-folder :contents="item" @download="downloadFile"></file-folder>
+      <file-folder
+        :contents="item"
+        :folder="folder == '' ? name : folder + '/' + name"
+        @download="downloadFile"
+      ></file-folder>
     </v-list-group>
   </v-list>
 </template>
@@ -52,6 +69,10 @@ export default {
   props: {
     contents: {
       type: Object,
+      required: true,
+    },
+    folder: {
+      type: String,
       required: true,
     },
   },

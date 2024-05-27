@@ -13,6 +13,8 @@
     "@mdi/font": "5.9.55",
     "aws-sdk": "^2.1628.0",
     "core-js": "^3.8.3",
+    "file-saver": "^2.0.5",
+    "jszip": "^3.10.1",
     "roboto-fontface": "*",
     "vue": "^3.2.13",
     "vuetify": "^3.6.7",

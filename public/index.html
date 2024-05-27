@@ -9,11 +9,10 @@
   </head>
   <body>
     <noscript>
-      <strong
-        >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
-        properly without JavaScript enabled. Please enable it to
-        continue.</strong
-      >
+      <strong>
+        We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
+        properly without JavaScript enabled. Please enable it to continue.
+      </strong>
     </noscript>
     <div id="protected-content" style="display: none">
       <div id="app"></div>
@@ -22,10 +21,11 @@
       function checkPassword() {
         const urlParams = new URLSearchParams(window.location.search);
         const password = urlParams.get("password");
-        if (password !== "your-password") {
-          document.body.innerHTML = "<h1>Access Denied</h1>";
-        } else {
+        const hostname = window.location.hostname;
+        if (hostname.includes("localhost") || password === "your-password") {
           document.getElementById("protected-content").style.display = "block";
+        } else {
+          document.body.innerHTML = "<h1>Access Denied</h1>";
         }
       }
       window.onload = checkPassword;
