@@ -15,14 +15,14 @@ const routes = [
     component: IntroductionToRobotics,
   },
   {
-    path: "/curriculum-access/taking-off-with-pilot",
+    path: "/taking-off-with-pilot",
     name: "TakingOffWithPilot",
     component: TakingOffWithPilot,
   },
 ];
 
 const router = createRouter({
-  history: createWebHistory("/curriculum-access/"),
+  history: createWebHistory(process.env.BASE_URL),
   routes,
 });
 
