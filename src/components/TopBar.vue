@@ -1,9 +1,6 @@
 <template>
-  <v-toolbar color="secondary">
-    <v-btn icon>
-      <v-icon>mdi-menu</v-icon>
-    </v-btn>
-    <v-toolbar-title>My files</v-toolbar-title>
+  <v-toolbar color="purple" dark>
+    <v-toolbar-title>My Files</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-text-field
       v-model="search"
@@ -11,29 +8,19 @@
       label="Search"
       single-line
       hide-details
-      @input="onSearch"
+      @input="$emit('search', search)"
+      :style="{ paddingRight: '25px' }"
     ></v-text-field>
-    <v-btn icon>
-      <v-icon>mdi-view-module</v-icon>
-    </v-btn>
   </v-toolbar>
 </template>
 
 <script>
 export default {
+  name: "TopBar",
   data() {
     return {
       search: "",
     };
   },
-  methods: {
-    onSearch() {
-      this.$emit("search", this.search);
-    },
-  },
 };
 </script>
-
-<style scoped>
-/* Add your styles here */
-</style>

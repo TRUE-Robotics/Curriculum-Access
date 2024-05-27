@@ -1,66 +1,57 @@
 <template>
-  <v-list>
-    <v-list-group v-for="(item, name) in contents" :key="name" :value="name">
-      <template v-slot:activator="{ props }">
-        <v-list-item
+  <v-card flat elevation="0" :style="{ paddingLeft: '25px' }">
+    <v-list>
+      <v-list-group v-for="(item, name) in contents" :key="name" :value="name">
+        <template v-slot:activator="{ props }">
+          <v-list-item
+            v-if="isFolder(item)"
+            v-bind="props"
+            prepend-icon="mdi-folder"
+            :title="name"
+          >
+            <template v-slot:prepend>
+              <v-avatar :color="getFileColor(name)">
+                <v-icon color="white">mdi-folder</v-icon>
+              </v-avatar>
+            </template>
+            <template v-slot:append>
+              <v-btn icon @click="downloadFolder(folder, name)">
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+            </template>
+          </v-list-item>
+
+          <v-list-item
+            v-else
+            :active="false"
+            inactive
+            class="list-item"
+            :title="name"
+            :subtitle="formatDate(item.lastModified)"
+          >
+            <template v-slot:prepend>
+              <v-avatar :color="getFileColor(name)">
+                <v-icon color="white">{{ getFileIcon(name) }}</v-icon>
+              </v-avatar>
+            </template>
+            <template v-slot:append>
+              <v-btn icon @click="downloadFile(folder, name)">
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+            </template>
+          </v-list-item>
+        </template>
+
+        <file-folder
           v-if="isFolder(item)"
-          v-bind="props"
-          prepend-icon="mdi-folder"
-          :title="name"
-        >
-          <template v-slot:prepend>
-            <v-avatar :color="getFileColor(name)">
-              <v-icon color="white">mdi-folder</v-icon>
-            </v-avatar>
-          </template>
-          <template v-slot:append>
-            <v-btn
-              icon
-              @click="
-                $emit(
-                  'downloadFolder',
-                  folder == '' ? name : folder + '/' + name
-                )
-              "
-            >
-              <v-icon>mdi-download</v-icon>
-            </v-btn>
-          </template>
-        </v-list-item>
-
-        <v-list-item
-          v-else
-          class="list-item"
-          no-action="true"
-          @click="$emit('download', folder == '' ? name : folder + '/' + name)"
-          :title="name"
-          :subtitle="formatDate(item.lastModified)"
-        >
-          <template v-slot:prepend>
-            <v-avatar :color="getFileColor(name)">
-              <v-icon color="white">{{ getFileIcon(name) }}</v-icon>
-            </v-avatar>
-          </template>
-          <template v-slot:append>
-            <v-btn
-              icon
-              @click="
-                $emit('download', folder == '' ? name : folder + '/' + name)
-              "
-            >
-              <v-icon>mdi-download</v-icon>
-            </v-btn>
-          </template>
-        </v-list-item>
-      </template>
-
-      <file-folder
-        :contents="item"
-        :folder="folder == '' ? name : folder + '/' + name"
-        @download="downloadFile"
-      ></file-folder>
-    </v-list-group>
-  </v-list>
+          :contents="item"
+          :folder="folderName(folder, name)"
+          @downloadFolder="downloadFolder"
+          @downloadFile="downloadFile"
+        ></file-folder>
+      </v-list-group>
+    </v-list>
+  </v-card>
 </template>
 
 <script>
@@ -82,6 +73,23 @@ export default {
     };
   },
   methods: {
+    folderName(folder, name) {
+      return folder == "" ? name : folder + "/" + name;
+    },
+    downloadFolder(folder, name) {
+      if (name === undefined) {
+        this.$emit("downloadFolder", folder);
+      } else {
+        this.$emit("downloadFolder", folder == "" ? name : folder + "/" + name);
+      }
+    },
+    downloadFile(folder, name) {
+      if (name === undefined) {
+        this.$emit("downloadFile", folder);
+      } else {
+        this.$emit("downloadFile", folder == "" ? name : folder + "/" + name);
+      }
+    },
     toggleFolder(name) {
       if (this.isOpen(name)) {
         this.openFolders = this.openFolders.filter((f) => f !== name);
@@ -96,10 +104,6 @@ export default {
     isFolder(value) {
       return value && !value.lastModified;
     },
-    async downloadFile(key) {
-      this.$emit("download", key);
-    },
-
     getFileIcon(filename) {
       if (filename.endsWith(".pdf")) return "mdi-file-pdf";
       if (filename.endsWith(".docx")) return "mdi-file-word";
@@ -117,6 +121,9 @@ export default {
       const date = new Date(value);
       return date.toLocaleDateString() + " " + date.toLocaleTimeString();
     },
+    getIndentationLevel(folder) {
+      return (folder.split("/").length + 1) * 20;
+    },
   },
 };
 </script>
@@ -127,5 +134,9 @@ export default {
 }
 .folder-icon .v-icon {
   color: purple !important;
+}
+.list-item {
+  cursor: default !important;
+  background-color: transparent !important;
 }
 </style>

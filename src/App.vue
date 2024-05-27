@@ -1,29 +1,15 @@
 <template>
   <v-app>
     <v-main>
+      <top-bar @search="searchFiles"></top-bar>
       <v-container>
         <v-card class="mx-auto">
-          <v-toolbar color="secondary">
-            <v-btn icon>
-              <v-icon>mdi-menu</v-icon>
-            </v-btn>
-            <v-toolbar-title>My files</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn icon>
-              <v-icon>mdi-magnify</v-icon>
-            </v-btn>
-            <v-btn icon>
-              <v-icon>mdi-view-module</v-icon>
-            </v-btn>
-          </v-toolbar>
-          <v-list lines="two">
-            <v-list-subheader inset>Folders</v-list-subheader>
-            <file-folder
-              :contents="files"
-              folder=""
-              @downloadFolder="downloadFolder"
-            ></file-folder>
-          </v-list>
+          <file-folder
+            :contents="filteredFiles"
+            folder=""
+            @downloadFolder="downloadFolder"
+            @downloadFile="downloadFile"
+          ></file-folder>
         </v-card>
       </v-container>
     </v-main>
@@ -33,15 +19,42 @@
 <script>
 import { listFiles, downloadFile, downloadFolder } from "@/awsService";
 import FileFolder from "./components/FileFolder.vue";
+import TopBar from "./components/TopBar.vue";
 
 export default {
   components: {
     FileFolder,
+    TopBar,
   },
   data() {
     return {
       files: {},
+      searchQuery: "",
     };
+  },
+  computed: {
+    filteredFiles() {
+      if (!this.searchQuery) {
+        return this.files;
+      }
+      const filter = (contents) => {
+        const result = {};
+        for (const [name, item] of Object.entries(contents)) {
+          if (this.isFolder(item)) {
+            const filteredContents = filter(item);
+            if (Object.keys(filteredContents).length > 0) {
+              result[name] = filteredContents;
+            }
+          } else if (
+            name.toLowerCase().includes(this.searchQuery.toLowerCase())
+          ) {
+            result[name] = item;
+          }
+        }
+        return result;
+      };
+      return filter(this.files);
+    },
   },
   async created() {
     this.files = await listFiles("tr-curriculum-bucket");
@@ -52,6 +65,12 @@ export default {
     },
     async downloadFolder(key) {
       await downloadFolder("tr-curriculum-bucket", key);
+    },
+    searchFiles(query) {
+      this.searchQuery = query;
+    },
+    isFolder(value) {
+      return value && !value.lastModified;
     },
   },
 };
