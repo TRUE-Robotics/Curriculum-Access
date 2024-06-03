@@ -1,25 +1,23 @@
-# Curriculum Acess
+# Curriculum Access
 
 ## Project setup
 
-```
-npm install
-```
+1. Install the necessary dependencies:
+    ```
+    npm install
+    ```
 
-## Need to create a .env file for following variables
+2. Create a `.env` file with the following variables:
+    ```
+    VUE_APP_AWS_ACCESS_KEY_ID=
+    VUE_APP_AWS_SECRET_ACCESS_KEY=
+    VUE_APP_AWS_REGION=
+    VUE_APP_ACCESS_PASSWORD=
+    ```
 
-```
-VUE_APP_AWS_ACCESS_KEY_ID=
-VUE_APP_AWS_SECRET_ACCESS_KEY=
-VUE_APP_AWS_REGION=
-VUE_APP_ACCESS_PASSWORD=
-```
-
-For deving set config dev variable to True in config.js otherwise access wil deny for loading web pages.
-
+For development, set the `config.dev` variable to `true` in `config.js`, otherwise, access will be denied for loading web pages.
 
 ### Compiles and hot-reloads for development
-
 ```
 npm run serve
 ```
