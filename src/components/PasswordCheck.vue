@@ -23,13 +23,19 @@ export default {
   },
   methods: {
     checkPassword() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const password = urlParams.get("password");
-      const envPassword = process.env.VUE_APP_ACCESS_PASSWORD;
-      if (password === envPassword || config.dev) {
-        this.authenticated = true;
-      } else {
-        this.authenticated = false;
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const password = urlParams.get("password");
+        const envPassword = process.env.VUE_APP_ACCESS_PASSWORD;
+        if (password === envPassword || config.dev) {
+          this.authenticated = true;
+          console.log("Authenticated");
+        } else {
+          this.authenticated = false;
+          console.log("Not authenticated");
+        }
+      } catch (e) {
+        console.log("Could not check password", e);
       }
     },
   },
