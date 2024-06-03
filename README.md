@@ -15,6 +15,7 @@ VUE_APP_AWS_REGION=
 VUE_APP_ACCESS_PASSWORD=
 ```
 
+For deving set config dev variable to True in config.js otherwise access wil deny for loading web pages.
 
 
 ### Compiles and hot-reloads for development
